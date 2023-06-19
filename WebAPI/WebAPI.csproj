@@ -6,13 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Helpers\Repositories\" />
-    <Folder Include="Helpers\Services\" />
-    <Folder Include="Models\Dtos\" />
-    <Folder Include="Models\Schemas\" />
-    <Folder Include="Contexts\" />
-  </ItemGroup>
-
 </Project>
