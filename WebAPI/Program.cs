@@ -14,6 +14,6 @@ builder.Services.AddScoped<UsersService>();
 builder.Services.AddScoped<UsersRepo>();
 
 var app = builder.Build();
-
+app.UseCors(x => x.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 app.MapControllers();
 app.Run();
