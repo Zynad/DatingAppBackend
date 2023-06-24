@@ -17,7 +17,6 @@ public class UsersController : ControllerBase
         _usersService = usersService;
     }
     [HttpGet]
-    [Route("GetAllUsers")]
     public async Task<IActionResult> GetAllUsersAsync()
     {
         if(ModelState.IsValid)
@@ -31,8 +30,7 @@ public class UsersController : ControllerBase
         }
         return BadRequest();
     }
-    [HttpGet]
-    [Route("GetUser/{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetUserAsync(int id)
     {
         if (ModelState.IsValid)
