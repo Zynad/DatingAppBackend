@@ -46,9 +46,9 @@ public class AccountController : ControllerBase
             if (user != null)
             {
                 var result = await _accountService.LoginAsync(user,schema.Password);
-                if (result == "Success")
+                if (result != null)
                 {
-                    return Ok(user);
+                    return Ok(result);
                 }
             }
             return Unauthorized();

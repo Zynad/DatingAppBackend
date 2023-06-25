@@ -1,20 +1,24 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using WebAPI.Helpers.Repositories;
+using WebAPI.Models.Dtos;
 using WebAPI.Models.Entities;
+using WebAPI.Models.Interfaces;
 
 namespace WebAPI.Helpers.Services;
 
 public class AccountService
 {
     private readonly AccountRepo _accountRepo;
+    private readonly ITokenService _tokenService;
 
-    public AccountService(AccountRepo accountRepo)
+    public AccountService(AccountRepo accountRepo, ITokenService tokenService)
     {
         _accountRepo = accountRepo;
+        _tokenService = tokenService;
     }
 
-    public async Task<AppUser> RegisterAsync(string username, string password)
+    public async Task<UserDto> RegisterAsync(string username, string password)
     {
         using var hmac = new HMACSHA512();
 
@@ -28,7 +32,11 @@ public class AccountService
         var result = await _accountRepo.AddAsync(user);
         if(result != null)
         {
-            return result;
+            return new UserDto
+            {
+                Username = result.UserName,
+                Token = _tokenService.CreateToken(result)
+            };
         }
         return null!;
     }
@@ -44,7 +52,7 @@ public class AccountService
         return null!;
     }
 
-    public async Task<string> LoginAsync(AppUser user, string password)
+    public async Task<UserDto> LoginAsync(AppUser user, string password)
     {
         using var hmac = new HMACSHA512(user.PasswordSalt);
 
@@ -53,8 +61,12 @@ public class AccountService
         for (int i = 0; i < computedHash.Length; i++)
         {
             if (computedHash[i] != user.PasswordHash[i])
-                return "Fail";
+                return null!;
         }
-        return "Success";
+        return new UserDto
+        {
+            Username = user.UserName,
+            Token = _tokenService.CreateToken(user)
+        };
     }
 }

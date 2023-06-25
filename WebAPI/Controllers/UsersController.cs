@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Contexts;
@@ -30,6 +31,7 @@ public class UsersController : ControllerBase
         }
         return BadRequest();
     }
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserAsync(int id)
     {
